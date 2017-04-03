@@ -22,17 +22,16 @@ const setupSockets = (ioServer) => {
     socket.emit('joined', characters[hash]);
 
     socket.on('movementUpdate', (data) => {
-      
-      let dataAfterGrav = data;
+      const dataAfterGrav = data;
       // gravity????
-      if(data.y < 395) {
+      if (data.y < 395) {
         dataAfterGrav.y++;
         console.log(dataAfterGrav.y);
       }
-      
+
       characters[socket.hash] = dataAfterGrav;
       characters[socket.hash].lastUpdate = new Date().getTime();
-      
+
       physics.setCharacter(characters[socket.hash]);
 
       io.sockets.in('room1').emit('updatedMovement', { charID: characters[socket.hash], newY: dataAfterGrav.y });
